@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CalendarTaskScheduler from "./CalendarTaskScheduler";
 import "./App.css";
 
 type Task = {
@@ -106,6 +107,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
+      <CalendarTaskScheduler />
     </div>
   );
 };
