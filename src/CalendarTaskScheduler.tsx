@@ -1,4 +1,4 @@
-import  { useState} from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { format } from "date-fns";
 import { Calendar } from "react-date-range";
@@ -21,31 +21,12 @@ const CalendarTaskScheduler: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [tasksByDate, setTasksByDate] = useState<TasksByDate>({});
   const [newTask, setNewTask] = useState<string>("");
-  const [editingTask, setEditingTask] = useState<{ date: string; id: number; text: string } | null>(null);
+  const [editingTask, setEditingTask] = useState<{
+    date: string;
+    id: number;
+    text: string;
+  } | null>(null);
   const [darkMode, setDarkMode] = useState<boolean>(false);
-
-  // Load tasks from localStorage on component mount
-  // useEffect(() => {
-  //   // Load tasks from localStorage on component mount
-  //   const storedTasks = localStorage.getItem("tasksByDate");
-  //   if (storedTasks) {
-  //     try {
-  //       setTasksByDate(JSON.parse(storedTasks));
-  //     } catch (error) {
-  //       console.error("Failed to parse tasks from localStorage:", error);
-  //     }
-  //   }
-  // }, []);
-  localStorage.setItem("tasksByDate", JSON.stringify(tasksByDate));
-  
-  // useEffect(() => {
-  //   // Save tasks to localStorage whenever tasksByDate updates
-  //   try {
-  //     localStorage.setItem("tasksByDate", JSON.stringify(tasksByDate));
-  //   } catch (error) {
-  //     console.error("Failed to save tasks to00 localStorage:", error);
-  //   }
-  // }, [tasksByDate]);
 
   const handleDateChange = (date: Date) => setSelectedDate(date);
 
@@ -59,13 +40,25 @@ const CalendarTaskScheduler: React.FC = () => {
         completed: false,
       };
 
-      setTasksByDate({
+      const updatedTasksByDate = {
         ...tasksByDate,
         [formattedDate]: [...tasksForDate, newTaskObj],
-      });
+      };
+
+      setTasksByDate(updatedTasksByDate);
+
+      localStorage.setItem("tasksByDate", JSON.stringify(updatedTasksByDate));
+
       setNewTask("");
     }
   };
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem("tasksByDate");
+    if (savedTasks) {
+      setTasksByDate(JSON.parse(savedTasks));
+    }
+  }, []);
 
   const deleteTask = (date: string, id: number) => {
     const tasksForDate = tasksByDate[date] || [];
@@ -78,6 +71,10 @@ const CalendarTaskScheduler: React.FC = () => {
       } else {
         updatedTasksByDate[date] = updatedTasksForDate;
       }
+
+      // Update local storage
+      localStorage.setItem("tasksByDate", JSON.stringify(updatedTasksByDate));
+
       return updatedTasksByDate;
     });
   };
@@ -88,10 +85,17 @@ const CalendarTaskScheduler: React.FC = () => {
       task.id === id ? { ...task, completed: !task.completed } : task
     );
 
-    setTasksByDate((prev) => ({
-      ...prev,
-      [date]: updatedTasksForDate,
-    }));
+    setTasksByDate((prev) => {
+      const updatedTasksByDate = {
+        ...prev,
+        [date]: updatedTasksForDate,
+      };
+
+      // Save updated tasks to local storage
+      localStorage.setItem("tasksByDate", JSON.stringify(updatedTasksByDate));
+
+      return updatedTasksByDate;
+    });
   };
 
   const startEditingTask = (date: string, id: number, text: string) => {
@@ -106,10 +110,18 @@ const CalendarTaskScheduler: React.FC = () => {
         task.id === id ? { ...task, text } : task
       );
 
-      setTasksByDate((prev) => ({
-        ...prev,
-        [date]: updatedTasksForDate,
-      }));
+      setTasksByDate((prev) => {
+        const updatedTasksByDate = {
+          ...prev,
+          [date]: updatedTasksForDate,
+        };
+
+        // Save updated tasks to local storage
+        localStorage.setItem("tasksByDate", JSON.stringify(updatedTasksByDate));
+
+        return updatedTasksByDate;
+      });
+
       setEditingTask(null);
     }
   };
@@ -117,6 +129,18 @@ const CalendarTaskScheduler: React.FC = () => {
   const cancelEditingTask = () => {
     setEditingTask(null);
   };
+
+  const toggleTheme = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("darkMode", JSON.stringify(newMode));
+  };
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode");
+    if (savedDarkMode) {
+      setDarkMode(JSON.parse(savedDarkMode));
+    }
+  }, []);
 
   const customDayContent = (day: Date) => {
     const formattedDay = format(day, "yyyy-MM-dd");
@@ -126,7 +150,7 @@ const CalendarTaskScheduler: React.FC = () => {
       <div>
         <span>{day.getDate()}</span>
         {hasTasks && (
-          <span className="text-blue-500" title="Tasks scheduled">
+          <span className="text-blue-500 absolute" title="Tasks scheduled">
             <SiGoogletasks />
           </span>
         )}
@@ -145,7 +169,7 @@ const CalendarTaskScheduler: React.FC = () => {
       <header className="flex justify-between items-center w-full max-w-4xl mb-8">
         <h1 className="text-4xl font-bold tracking-wide">Task Scheduler</h1>
         <button
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={toggleTheme}
           className={`p-2 rounded-full transition ${
             darkMode
               ? "bg-gray-800 text-yellow-300 hover:bg-gray-700"
@@ -157,9 +181,9 @@ const CalendarTaskScheduler: React.FC = () => {
         </button>
       </header>
 
-      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-4xl">
+      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-4xl ">
         {/* Calendar */}
-        <div className="flex-1">
+        <div className="flex-1  ">
           <Calendar
             date={selectedDate}
             onChange={handleDateChange}
@@ -216,16 +240,17 @@ const CalendarTaskScheduler: React.FC = () => {
                     {tasks.map((task) => (
                       <li
                         key={task.id}
-                        className="flex justify-between items-center"
+                        className="flex flex-wrap justify-between items-center gap-2"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
                           <input
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => toggleTaskCompletion(date, task.id)}
                             className="cursor-pointer"
                           />
-                          {editingTask?.id === task.id && editingTask.date === date ? (
+                          {editingTask?.id === task.id &&
+                          editingTask.date === date ? (
                             <input
                               type="text"
                               value={editingTask.text}
@@ -235,13 +260,17 @@ const CalendarTaskScheduler: React.FC = () => {
                                   text: e.target.value,
                                 })
                               }
-                              className="border rounded px-2 py-1 focus:outline-none w-32"
+                              className={`border rounded px-2 py-1 focus:outline-none w-full sm:w-auto ${
+                                darkMode
+                                  ? "bg-gray-950 border-gray-600 text-gray-800 "
+                                  : "border-gray-300 focus:ring-blue-400"
+                              }`}
                             />
                           ) : (
                             <span
-                              className={`${
+                              className={`truncate ${
                                 task.completed
-                                  ? " font-semibold line-through text-gray-500"
+                                  ? "font-semibold line-through text-gray-500"
                                   : ""
                               }`}
                             >
@@ -250,34 +279,37 @@ const CalendarTaskScheduler: React.FC = () => {
                           )}
                         </div>
                         <div className="flex gap-2">
-                          {editingTask?.id === task.id && editingTask.date === date ? (
+                          {editingTask?.id === task.id &&
+                          editingTask.date === date ? (
                             <>
                               <button
                                 onClick={saveEditedTask}
                                 className="px-2 py-1 text-sm rounded bg-green-500 text-white hover:bg-green-600"
                               >
-                                 <FaSave /> 
+                                <FaSave />
                               </button>
                               <button
                                 onClick={cancelEditingTask}
                                 className="px-2 py-1 text-sm rounded bg-gray-400 text-white hover:bg-gray-500"
                               >
-                               <FaTimes /> 
+                                <FaTimes />
                               </button>
                             </>
                           ) : (
                             <button
-                              onClick={() => startEditingTask(date, task.id, task.text)}
+                              onClick={() =>
+                                startEditingTask(date, task.id, task.text)
+                              }
                               className="px-2 py-1 text-sm rounded bg-yellow-500 text-white hover:bg-yellow-600"
                             >
-                             <FaEdit /> 
+                              <FaEdit />
                             </button>
                           )}
                           <button
                             onClick={() => deleteTask(date, task.id)}
                             className="px-2 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600"
                           >
-                            <FaTrash/>
+                            <FaTrash />
                           </button>
                         </div>
                       </li>
