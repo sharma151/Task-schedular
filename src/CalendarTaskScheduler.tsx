@@ -262,7 +262,7 @@ const CalendarTaskScheduler: React.FC = () => {
                               }
                               className={`border rounded px-2 py-1 focus:outline-none w-full sm:w-auto ${
                                 darkMode
-                                  ? "bg-gray-950 border-gray-600 text-gray-800 "
+                                  ? "bg-gray-950 border-gray-600 text-white"
                                   : "border-gray-300 focus:ring-blue-400"
                               }`}
                             />
