@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import "./App.css";
-import { format } from "date-fns";
-import { Calendar } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { SiGoogletasks } from "react-icons/si";
 import { FaTrash, FaEdit, FaTimes, FaSave } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { SiGoogletasks } from "react-icons/si";
+import { Calendar } from "react-date-range";
+import { format } from "date-fns";
+import "react-date-range/dist/theme/default.css";
+import "react-date-range/dist/styles.css";
+import "./App.css";
 
 type Task = {
   id: number;
