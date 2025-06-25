@@ -173,7 +173,7 @@ const CalendarTaskScheduler: React.FC = () => {
               value={selectedDate}
               onChange={(date) => handleDateChange(date as Date)}
               tileContent={tileContent}
-              className={`w-full border-0 mx-auto  ${
+              className={`w-full border-0 mx-auto my-5 ${
                 darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
               }`}
               navigationLabel={({ date }) => (
@@ -231,7 +231,7 @@ const CalendarTaskScheduler: React.FC = () => {
           {Object.keys(tasksByDate).length === 0 ? (
             <div
               className={`flex flex-col items-center justify-center py-12 rounded-lg ${
-                darkMode ? "bg-gray-700" : "bg-gray-50"
+                darkMode ? "bg-gray-700" : "bg-gray-200"
               }`}
             >
               <SiGoogletasks className="text-4xl text-gray-400 mb-4" />
