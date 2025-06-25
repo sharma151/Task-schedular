@@ -253,7 +253,7 @@ const CalendarTaskScheduler: React.FC = () => {
                       darkMode ? "bg-gray-700" : "bg-gray-50"
                     }`}
                   >
-                    <h3 className="text-sm font-medium mb-3 text-gray-500 dark:text-gray-400">
+                    <h3 className="text-sm font-medium mb-3 text-gray-800 dark:text-gray-600">
                       {format(new Date(date), "EEEE, MMMM d, yyyy")}
                     </h3>
                     <ul className="space-y-2">
@@ -261,7 +261,7 @@ const CalendarTaskScheduler: React.FC = () => {
                         <li
                           key={task.id}
                           className={`flex items-center justify-between gap-3 p-3 rounded-lg transition ${
-                            darkMode ? "hover:bg-gray-600" : "hover:bg-gray-100"
+                            darkMode ? "hover:bg-gray-600" : "hover:bg-gray-300"
                           } ${
                             task.completed
                               ? darkMode
@@ -305,8 +305,8 @@ const CalendarTaskScheduler: React.FC = () => {
                               <span
                                 className={`flex-1 truncate ${
                                   task.completed
-                                    ? "line-through text-gray-500 dark:text-gray-400"
-                                    : "text-gray-800 dark:text-gray-200"
+                                    ? "line-through text-gray-500 dark:text-gray-700"
+                                    : "text-gray-800 dark:text-gray-700 text-lg"
                                 }`}
                               >
                                 {task.text}
