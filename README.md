@@ -1,50 +1,65 @@
-# React + TypeScript + Vite
+# 📋 Task Scheduler
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Task Scheduler** is a simple and clean **Todo List application built with React and TypeScript**.  
+It helps users manage their daily tasks efficiently using a **sidebar-based filter system** and an intuitive task management interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- View todos by status:
+  - **All Tasks**
+  - **Pending Tasks**
+  - **Completed Tasks**
+- Add a task with:
+  - Title
+  - Description
+  - Due Date
+- **Edit existing tasks**
+- **Mark tasks as completed**
+- **Delete tasks**
+- View **total number of pending tasks**
+- Clean and minimal UI with a sidebar layout
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+## 🛠️ Tech Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- React
+- TypeScript
+- Yarn
+- Vite / CRA
+- CSS / Tailwind 
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## 📦 Prerequisites
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Make sure you have the following installed:
+
+- **Node.js** (v18 or higher recommended)
+- **Yarn**
+
+Verify installation:
+```bash
+node -v
+yarn -v
+
+
+## How to Run the Project (Yarn)
+
+## Clone the repository
+
+git clone https://github.com/sharma151/Todolist-Typescript.git
+
+## Go to project directory
+
+cd TODOLIST-TYPESCRIPT
+
+## Install dependencies
+
+yarn install
+
+## Start development server
+
+yarn dev
