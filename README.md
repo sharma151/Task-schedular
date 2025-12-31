@@ -29,7 +29,7 @@ It helps users manage their daily tasks efficiently using a **sidebar-based filt
 - TypeScript
 - Yarn
 - Vite / CRA
-- CSS / Tailwind 
+- CSS / Tailwind
 
 ---
 
@@ -41,10 +41,11 @@ Make sure you have the following installed:
 - **Yarn**
 
 Verify installation:
-```bash
+
 node -v
 yarn -v
 
+---
 
 ## How to Run the Project (Yarn)
 
