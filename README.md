@@ -51,7 +51,7 @@ yarn -v
 
 ## Clone the repository
 
-git clone https://github.com/sharma151/Todolist-Typescript.git
+git clone https://github.com/sharma151/Task-schedular.git
 
 ## Go to project directory
 
